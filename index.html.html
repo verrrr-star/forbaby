@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Spesial Buat Dede</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fce4ec; 
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
+            color: #4a4a4a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            height: 590px;
+            background-color: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(244, 143, 177, 0.4);
+            border: 4px solid #b3e5fc; 
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 25px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background-image: radial-gradient(#e1f5fe 10%, transparent 11%), radial-gradient(#fce4ec 10%, transparent 11%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        .slide.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        .slide.exit { opacity: 0; visibility: hidden; transform: translateX(-100px); }
+
+        .card-text {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 2px solid #f48fb1;
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+            max-height: 330px;
+            overflow-y: auto;
+        }
+
+        .polaroid-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .polaroid-frame {
+            background-color: white;
+            padding: 10px 10px 25px 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            width: 45%;
+            max-width: 160px;
+            transition: transform 0.3s;
+        }
+        .polaroid-frame:hover { transform: scale(1.08) rotate(0deg) !important; z-index: 5; }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 140px;
+            background-color: #e1f5fe;
+            border: 2px dashed #b3e5fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            overflow: hidden;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .caption-full {
+            font-style: italic;
+            font-size: 13px;
+            color: #4a4a4a;
+            margin-top: 15px;
+            font-weight: bold;
+            line-height: 1.4;
+            max-width: 90%;
+        }
+
+        .btn {
+            background-color: #ff80ab;
+            color: white;
+            padding: 12px 30px;
+            border: 2px solid white;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 128, 171, 0.4);
+            margin-top: 15px;
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+        .btn:hover { transform: scale(1.05); }
+        .btn-blue { background-color: #4fc3f7; box-shadow: 0 5px 15px rgba(79, 195, 247, 0.4); }
+
+        .dots-container {
+            position: absolute;
+            bottom: 12px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 8px;
+            z-index: 10;
+        }
+        .dot { width: 8px; height: 8px; background-color: #e0e0e0; border-radius: 50%; transition: background-color 0.3s; }
+        .dot.active { background-color: #ff80ab; width: 18px; border-radius: 10px; }
+
+        .envelope-wrapper { position: relative; width: 180px; height: 130px; background-color: #b3e5fc; border-radius: 0 0 15px 15px; box-shadow: 0 10px 20px rgba(2, 136, 209, 0.15); cursor: pointer; margin-bottom: 30px; transition: transform 0.3s; }
+        .envelope-wrapper:hover { transform: scale(1.05) rotate(-2deg); }
+        .envelope-flap { position: absolute; top: 0; left: 0; border-left: 90px solid transparent; border-right: 90px solid transparent; border-top: 75px solid #4fc3f7; }
+        .envelope-front { position: absolute; top: 0; left: 0; border-left: 90px solid #81d4fa; border-right: 90px solid #81d4fa; border-bottom: 65px solid #0288d1; border-top: 65px solid transparent; border-radius: 0 0 15px 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- SLIDE 1 -->
+        <div class="slide active" id="slide-1">
+            <h2 style="color: #0288d1; margin-top: 0;">heii youu! 📬</h2>
+            <p style="color: #78909c; margin-bottom: 25px; font-weight: bold;">inii suratt buatt dedeee</p>
+            <div class="envelope-wrapper" onclick="nextSlide()">
+                <div class="envelope-flap"></div>
+                <div class="envelope-front"></div>
+            </div>
+            <button class="btn" onclick="nextSlide()">click heree ✨</button>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide" id="slide-2">
+            <h2 style="color: #ff4081; margin-top: 0; font-size: 20px;">dibaca baik baikk yaaa 💌</h2>
+            <div class="card-text">
+                <p style="margin-top:0;">haaiii princesss abanggg iniiii,</p>
+                <p>dedeee sebelummnyaa makasiii yaaaa udaaaa maauuu samaaa abanggg 3 taunnn iniii abanhgg, abanggg ndaaa pernaa bayangin hidup abangg sehancur apaa tanpaa dedeeee...</p>
+                <p>duluu ingett ingettt abanggg nangiss karnaa enggaa nyangkaa hidupp abangg bisaa berubahh see drastis ini karnaa dedee pertama kalii datengg dihidup abangg pass hancurr, dedeee perbaiki darii awalll, abanggg jujurr senenggg bisaaa bertahan selamaa iniii.</p>
+            </div>
+            <button class="btn btn-blue" onclick="nextSlide()">Lanjut Baca ➡️</button>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide" id="slide-3">
+            <h2 style="color: #ff4081; margin-top: 0; font-size: 20px;">dibaca baik baikk yaaa 💌</h2>
+            <div class="card-text">
+                <p style="margin-top:0;">abangg terharu siii bisaaa selamaa inii samaa dedeee padahall dulu akuu gaa berharap apapaunn, tapii entahh kenapaaa akuu sekarangg malahh berharap kita bisaa barenhg selamanya ibu dan bunda jugaa restui hubungan kitaa...</p>
+                <p>karnaa menurut abangg kitaa salingg jagaa, salingg ingetinn hall positif ituu yangh bikinn kitaa kayaa ginii, walaupun kitaa pernaa dapett masalaahh yaaa semuaa pastii pernaa kannn, tapii gimanaa caraa kitaa menghadapi itu.</p>
+            </div>
+            <button class="btn" onclick="nextSlide()">Lanjut Baca ➡️</button>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide" id="slide-4">
+            <h2 style="color: #ff4081; margin-top: 0; font-size: 20px;">dibaca baik baikk yaaa 💌</h2>
+            <div class="card-text">
+                <p style="margin-top:0;">sesusah apapunn ituu abangg gabakall lepasin dedee cuma cuma, kamuu terlalu spesial buattt abaanhh, dedeee jangann sampee kenapaa napaa okeeeeiii sakitt gapapaa, nanti abangg jagainn...</p>
+                <p>dedeee bakall abanng perjuangin biarr kitaa bisaa samaaa samaa barengg walaupun dimasaa sulitt, dedeee tenangg yaaaa im heree forr you always untill i died, i lovee soo muchh dedeee ❤️</p>
+            </div>
+            <button class="btn btn-blue" onclick="nextSlide()">Lihat Foto Kita 📸</button>
+        </div>
+
+        <!-- SLIDE 5 (Foto 1 & 2) -->
+        <div class="slide" id="slide-5">
+            <h3 style="color: #0288d1; margin-top:0; margin-bottom: 10px;">Our Memory ✨</h3>
+            <div class="polaroid-container">
+                <div class="polaroid-frame" style="transform: rotate(-4deg); background-color: #fff3e0;">
+                    <div class="photo-placeholder">
+                        <img src="https://i.ibb.co.com/Jjz4jqbW/foto.jpg" alt="Foto 1">
+                    </div>
+                </div>
+                <div class="polaroid-frame" style="transform: rotate(5deg); background-color: #e8f5e9;">
+                    <div class="photo-placeholder">
+                        <img src="https://i.ibb.co.com/63nBWRp/foto2.jpg" alt="Foto 2">
+                    </div>
+                </div>
+            </div>
+            <div class="caption-full">ingett nggaa waktu ini?kita malu malu buat fotbar</div>
+            <button class="btn" onclick="nextSlide()">Lanjut ➡️</button>
+        </div>
+
+        <!-- SLIDE 6 (Foto 3 & 4) -->
+        <div class="slide" id="slide-6">
+            <h3 style="color: #ff4081; margin-top:0; margin-bottom: 10px;">Best Shot 📸</h3>
+            <div class="polaroid-container">
+                <div class="polaroid-frame" style="transform: rotate(-3deg); background-color: #fce4ec;">
+                    <div class="photo-placeholder">
+                        <img src="https://i.ibb.co.com/2mmFCbJ/foto3.jpg" alt="Foto 3">
+                    </div>
+                </div>
+                <div class="polaroid-frame" style="transform: rotate(4deg); background-color: #fffde7;">
+                    <div class="photo-placeholder">
+                        <img src="https://i.ibb.co.com/bghXZkYq/foto4.jpg" alt="Foto 4">
+                    </div>
+                </div>
+            </div>
+            <div class="caption-full">kalo ini fotbar terbaik kita si, walaupun adaa sedinya karna terakhir kali kita punya status satu kelas tapiii abangg senengg bangettt</div>
+            <button class="btn btn-blue" onclick="nextSlide()">Terakhir ✨</button>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="slide" id="slide-7">
+            <div style="font-size: 50px; margin-bottom: 10px;">👑❤️</div>
+            <h3 style="color: #ff4081; margin: 0; font-size: 22px;">Untuk My Princess</h3>
+            <div style="padding: 15px; font-size: 14px; line-height: 1.6; font-weight: bold; color: #5c6bc0; max-width: 90%;">
+                Sehatt selalu yaa dedee semogaa semua jalann kamu dipenuhi keberkahan, keselamatan dan segalaa hall hall baikk untukku jadilaahh dedee yangg akuu kenall selamaa iniii loveee youuuu myy princess
+            </div>
+            <button class="btn" onclick="resetSlides()">Ulangi Dari Awal 🔄</button>
+        </div>
+
+        <!-- DOTS -->
+        <div class="dots-container">
+            <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- LOGIKA SLIDE ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'exit');
+                if (index === currentSlide) { slide.classList.add('active'); } 
+                else if (index < currentSlide) { slide.classList.add('exit'); }
+            });
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) { dot.classList.add('active'); } 
+                else { dot.classList.remove('active'); }
+            });
+        }
+        function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateSlides(); } }
+        function resetSlides() { currentSlide = 0; updateSlides(); }
+    </script>
+</body>
+</html>
